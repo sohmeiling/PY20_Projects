@@ -36,13 +36,13 @@ Set window properties
 my_win.setWindowTitle("Memory Card") #for title
 my_win.resize(400, 300) #for size of the window
 my_win.move (600, 300) #where the window appears
-my_win.setStyleSheet("font: bold 14px; background-color: #F0E68C;")
+my_win.setStyleSheet("font: bold 14px; background-color: #D8BFD8;")
 
 """
 Add widgets
 """
 question = QLabel("Which nationality does not exist?")
-question.setStyleSheet("font: Helvetica; bold 14px; color: blue;")
+question.setStyleSheet("font: Arial; bold 18px; color: white;")
 optionA = QRadioButton("Enets")
 optionB = QRadioButton("Chulyms")
 optionC = QRadioButton("Smurfs")
@@ -66,7 +66,7 @@ RadioGroup.addButton(optionD)
 Create grouped answer panel
 """
 ans_panel = QGroupBox("Answer options:")
-ans_panel.setStyleSheet("font: bold 14px; color: darkgreen;")
+ans_panel.setStyleSheet("font: bold 14px; color: black;")
 
 ans_layout = QVBoxLayout()
 ans_line1 = QHBoxLayout()
