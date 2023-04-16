@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QApplication,QWidget,QGroupBox,QRadioButton,QPushButton,QLabel,QVBoxLayout,QHBoxLayout,QButtonGroup)
-from random import shuffle
+from random import shuffle, randint
 
 app = QApplication([])
 my_win = QWidget()
@@ -44,8 +44,6 @@ def show_correct(res):
     lb_Result.setText(res)
     show_result()
 
-answers = [rbtn_1, rbtn_2, rbtn_3, rbtn_4]
-
 def ask(q: Question):
     shuffle(answers)
     answers[0].setText(q.right_answer)
@@ -54,6 +52,7 @@ def ask(q: Question):
     answers[3].setText(q.wrong3)
     lb_question.setText(q.question)
     lb_Correct.setText("The correct answer is:" + q.right_answer)
+    show_question()
 
 def test():
     if btn_ok.text() == "Answer":
@@ -65,20 +64,26 @@ def check_answer():
     if answers[0].isChecked():
         show_correct("Correct!")
     else:
-        if answer[1].isChecked() or answer[2].isChecked() or answer[3].isChecked():
+        if answers[1].isChecked() or answers[2].isChecked() or answers[3].isChecked():
             show_correct("Incorrect!")
 
-my_win.cur_question  = -1
+question_order = list(range(0, len(question_list)))
 
 def next_question():
     my_win.total += 1
-    cur_question = randint(0, len(question_list) - 1)
-    q = question_list[my_win.cur_question]
+    my_win.cur_question = my_win.cur_question + 1 
+    if my_win.cur_question >= len(question_list):
+        shuffle(question_order)
+        my_win.cur_question = 0 
+        my_win.score = 0
+        my_win.total = 1
+    pick = question_order[my_win.cur_question]
+    q = question_list[pick]
     ask(q)
 
 def click_OK():
     ''' This determines whether to show another question or check the answer to this question. '''
-    if btn_OK.text() == 'Answer':
+    if btn_ok.text() == 'Answer':
         check_answer() # check the answer
     else:
         next_question() # next question
@@ -91,6 +96,8 @@ rbtn_1 = QRadioButton('Enets')
 rbtn_2 = QRadioButton('Chulyums')
 rbtn_3 = QRadioButton('Smurfs')
 rbtn_4 = QRadioButton('Aluets')
+
+answers = [rbtn_1, rbtn_2, rbtn_3, rbtn_4]
 
 RadioGroup = QButtonGroup() 
 RadioGroup.addButton(rbtn_1)
@@ -146,6 +153,7 @@ my_win.setLayout(layout_card)
 # -------------------------------Window setup -----------------------------
 my_win.score = 0
 my_win.total = 0
+my_win.cur_question = -1  
 
 btn_ok.clicked.connect(click_OK)
 next_question()
