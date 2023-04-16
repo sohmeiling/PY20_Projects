@@ -73,11 +73,18 @@ def check_answer():
             show_correct('Incorrect!')
             print('Rating: ', (my_win.score/my_win.total*100), '%')
 
+question_order = list(range(0, len(question_list)))
 
 def next_question():
     my_win.total += 1
-    cur_question = randint(0, len(question_list) - 1)
-    q = question_list[cur_question]
+    my_win.cur_question = my_win.cur_question + 1 
+    if my_win.cur_question >= len(question_list):
+        shuffle(question_order)
+        my_win.cur_question = 0 
+        my_win.score = 0
+        my_win.total = 1
+    pick = question_order[my_win.cur_question]
+    q = question_list[pick]
     ask(q) 
 
 def click_OK():
@@ -150,6 +157,7 @@ my_win.setLayout(layout_card)
 answers = [rbtn_1, rbtn_2, rbtn_3, rbtn_4]
 my_win.score = 0
 my_win.total = 0
+my_win.cur_question = -1
 
 next_question()
 btn_ok.clicked.connect(click_OK)
